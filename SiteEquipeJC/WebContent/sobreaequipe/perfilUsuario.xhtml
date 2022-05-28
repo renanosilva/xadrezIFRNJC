@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:composition PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="../template.xhtml">
+
+	<style>
+@CHARSET "UTF-8";
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:bold');
+
+th span {
+	margin-left: 0px;
+}
+
+td {
+	word-break: break-all;
+}
+
+.dados {
+	align-items: left;
+	box-shadow: 2px 3px 3px black;
+	margin-bottom: 20px;
+}
+
+.descricao {
+	font-family: roboto;
+	font-weigth: bold;
+	color: #e74c3c;
+	margin-left: -10;
+	padding: 10px;
+}
+
+.ui-inputswitch-off {
+	background: #e74c3c;
+	color: #e74c3c;
+}
+
+.ui-inputswitch .ui-inputswitch-on {
+	background: #27ae60;
+	color: #27ae60;
+}
+
+td form {
+	width:100%;
+	display: flex;
+	flex:1;
+	margin-left:-100px;
+	flex-direction: column;
+	box-sizing: border-box;
+	
+}
+#conteudo form{
+	margin:0 0%;
+}
+
+
+</style>
+
+	<div id="conteudo" class="container">
+		<br /> <br /> <br /> <br /> <br /> <br /> <br />
+
+		<div class="row">
+
+			<div class="col-sm-6 col-md-4 dados">
+			
+				<p:column headerText="Imagem">
+					<h:graphicImage url="/imagens/anonimo.png" alt="Perfil"
+						styleClass="fotoUsuario"
+						rendered="#{perfilMBean.usuario.idFoto == null and perfilMBean.usuario.sexoMasculino}" />
+					<h:graphicImage url="/imagens/anonima.png" alt="Perfil"
+						styleClass="fotoUsuario"
+						rendered="#{perfilMBean.usuario.idFoto == null and perfilMBean.usuario.sexoFeminino}" />
+
+					<h:graphicImage style="width:250px;" styleClass="fotoUsuario"
+						url="#{perfilMBean.usuario.urlFotoUsuario}" alt="Perfil"
+						rendered="#{perfilMBean.usuario.idFoto != null}" />
+					<br />
+				</p:column>
+				
+
+				<h:panelGrid columns="1">
+
+					<h:outputText value="NOME:" styleClass='descricao' />
+
+
+					<h:outputText value="#{perfilMBean.usuario.nome}" />
+
+
+
+					<h:outputText rendered="#{usuarioLogado.administrador}"
+						value="DATA DE NASCIMENTO:" styleClass='descricao' />
+
+					<h:outputText rendered="#{usuarioLogado.administrador}"
+						value="#{perfilMBean.usuario.dataNascimento}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+
+					<h:outputText value="E-MAIL:" styleClass='descricao' />
+
+					<h:outputText value="#{perfilMBean.usuario.email}" />
+
+					<h:outputText value="NÚMERO DE TELEFONE:" styleClass='descricao' rendered="#{usuarioLogado.administrador}"/>
+
+					<h:outputText value="#{perfilMBean.usuario.celular}" rendered="#{usuarioLogado.administrador}" />
+
+					<h:outputText rendered="#{usuarioLogado.administrador}"
+						value="MATRICULA:" styleClass='descricao' />
+
+					<h:outputText rendered="#{usuarioLogado.administrador}"
+						value="#{perfilMBean.usuario.matricula}" />
+
+
+					<h:outputText value="CPF:" styleClass='descricao'
+						rendered="#{usuarioLogado.administrador}" />
+
+					<h:outputText value="#{perfilMBean.usuario.cpf}"
+						rendered="#{usuarioLogado.administrador}" />
+
+					<h:outputText value="RG:" styleClass='descricao'
+						rendered="#{usuarioLogado.administrador}" />
+
+					<h:outputText value="#{perfilMBean.usuario.rg}"
+						rendered="#{usuarioLogado.administrador}" />
+
+
+					<h:outputText value="DADOS BANCARIOS:" styleClass='descricao'
+						rendered="#{usuarioLogado.administrador}" />
+
+					<h:panelGroup>
+
+						<h:outputText value="Conta:" styleClass='descricao'
+							rendered="#{usuarioLogado.administrador}" />
+
+						<h:outputText value="#{perfilMBean.usuario.conta}"
+							rendered="#{usuarioLogado.administrador}" />
+
+						<h:outputText value="Agência:" styleClass='descricao'
+							rendered="#{usuarioLogado.administrador}" />
+
+						<h:outputText value="#{perfilMBean.usuario.ag}"
+							rendered="#{usuarioLogado.administrador}" />
+
+						<h:outputText value="Banco:" styleClass='descricao'
+							rendered="#{usuarioLogado.administrador}" />
+
+						<h:outputText value="#{perfilMBean.usuario.banco}"
+							rendered="#{usuarioLogado.administrador}" />
+					</h:panelGroup>
+					
+					<h:form class="formulario-destaque" rendered="#{perfilMBean.usuario.destaque||usuarioLogado.administrador}">
+						<h:outputText styleClass='descricao' value="Usuario Destaque: " />
+
+						<p:inputSwitch value="#{perfilMBean.usuario.destaque}"
+							rendered="#{usuarioLogado.administrador}" />
+
+						
+
+						<p:inputTextarea rows="6" cols="25"
+							value="#{perfilMBean.usuario.textoDestaque}"
+							rendered="#{usuarioLogado.administrador}" />
+
+
+						<h:outputText value="#{perfilMBean.usuario.textoDestaque}"
+							rendered="#{!usuarioLogado.administrador}" />
+
+						<h:commandButton class="botao" value="Salvar Alteração"
+							action="#{perfilMBean.alterarDestaque}"
+							rendered="#{usuarioLogado.administrador}" />
+					</h:form>
+
+
+				</h:panelGrid>
+
+
+			</div>
+
+
+			<div class="col-sm-6 col-md-8">
+
+				<p:dataTable var="t" value="#{perfilMBean.usuario.torneios}"
+					style="width: 100%;" emptyMessage="Nenhum torneio encontrado.">
+					<p:column headerText="Torneios que participou">
+						<h:outputText value="#{t.nome_torneio}" />
+					</p:column>
+					<p:column headerText="Data do torneio">
+						<h:outputText value="#{t.data}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Local">
+						<h:outputText value="#{t.local}" />
+					</p:column>
+				</p:dataTable>
+			</div>
+		</div>
+
+
+
+
+
+
+
+	</div>
+
+</ui:composition>
